@@ -14,7 +14,7 @@ const _isLocal = _host === 'localhost'
 
 const API_BASE = _isLocal
     ? 'http://localhost:8080'
-    : 'https://kafu-sports-api.onrender.com';
+    : 'https://kafusports-api.onrender.com';
 
 console.log('[KAFU] API base:', API_BASE, '(host:', _host + ')');
 
