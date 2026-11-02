@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>League Table | KAFU Sports</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav class="navbar">
+    <a class="navbar-brand" href="index.html">
+        <img src="images/kafu-logo.png" alt="KAFU"/>
+        <span class="brand-text">KAFU <span class="brand-accent">SPORTS</span></span>
+    </a>
+    <button class="nav-toggle" id="navToggle">☰</button>
+    <div class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="league.html" class="active">League</a>
+        <a href="fixtures.html">Fixtures</a>
+        <a href="results.html">Results</a>
+        <a href="teams.html">Teams</a>
+        <a href="players.html">Players</a>
+        <a href="stats.html">Stats</a>
+    </div>
+</nav>
+<main class="container">
+    <div class="card">
+        <h1>KAFU League Table</h1>
+        <p style="color: #8b949e; margin-bottom: 24px;">Sorted by points, then goal difference.</p>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pos</th><th>Team</th>
+                        <th style="text-align:center;">P</th>
+                        <th style="text-align:center;">W</th>
+                        <th style="text-align:center;">D</th>
+                        <th style="text-align:center;">L</th>
+                        <th style="text-align:center;">GF</th>
+                        <th style="text-align:center;">GA</th>
+                        <th style="text-align:center;">GD</th>
+                        <th style="text-align:center;">Pts</th>
+                    </tr>
+                </thead>
+                <tbody id="leagueBody">
+                    <tr><td colspan="10" class="loading">Loading…</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+<footer>© 2026 Kaimosi Friends University Sports Portal</footer>
+<script src="js/api.js"></script>
+<script>
+document.getElementById('navToggle')?.addEventListener('click', function() {
+    document.getElementById('navLinks').classList.toggle('open');
+    this.textContent = document.getElementById('navLinks').classList.contains('open') ? '✕' : '☰';
+});
+(async () => {
+    try {
+        const league = await API.getLeague();
+        const rows = league.map(t => `
+            <tr>
+                <td style="font-family:'Playfair Display',serif; font-size:20px; color:#C9A227;">${t.pos}</td>
+                <td style="font-weight:600; color:#fff;">${t.team.name}</td>
+                <td style="text-align:center;">${t.played}</td>
+                <td style="text-align:center; color:#4DD086;">${t.wins}</td>
+                <td style="text-align:center; color:#C9A227;">${t.draws}</td>
+                <td style="text-align:center; color:#ff7b72;">${t.losses}</td>
+                <td style="text-align:center;">${t.goalsFor}</td>
+                <td style="text-align:center;">${t.goalsAgainst}</td>
+                <td style="text-align:center; font-weight:600; color:${t.goalDifference > 0 ? '#4DD086' : t.goalDifference < 0 ? '#ff7b72' : '#C9D1D9'};">
+                    ${t.goalDifference > 0 ? '+' : ''}${t.goalDifference}
+                </td>
+                <td style="text-align:center; font-family:'Playfair Display',serif; font-size:20px; color:#C9A227;">${t.points}</td>
+            </tr>
+        `).join('');
+        document.getElementById('leagueBody').innerHTML = rows || '<tr><td colspan="10" class="loading">No teams yet</td></tr>';
+    } catch (err) {
+        document.getElementById('leagueBody').innerHTML = `<tr><td colspan="10" class="error">${err.message}</td></tr>`;
+    }
+})();
+</script>
+</body>
+</html>

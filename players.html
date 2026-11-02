@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Players | KAFU Sports</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav class="navbar">
+    <a class="navbar-brand" href="index.html">
+        <img src="images/kafu-logo.png" alt="KAFU"/>
+        <span class="brand-text">KAFU <span class="brand-accent">SPORTS</span></span>
+    </a>
+    <button class="nav-toggle" id="navToggle">☰</button>
+    <div class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="league.html">League</a>
+        <a href="fixtures.html">Fixtures</a>
+        <a href="results.html">Results</a>
+        <a href="teams.html">Teams</a>
+        <a href="players.html" class="active">Players</a>
+        <a href="stats.html">Stats</a>
+    </div>
+</nav>
+<main class="container">
+    <div class="card">
+        <h1>Top Scorers</h1>
+        <p style="color: #8b949e; margin-bottom: 24px;">Leading goalscorers.</p>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th><th>Player</th><th>Team</th><th>Position</th><th style="text-align:center;">Goals</th><th style="text-align:center;">Assists</th>
+                    </tr>
+                </thead>
+                <tbody id="playersBody">
+                    <tr><td colspan="6" class="loading">Loading…</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+<footer>© 2026 Kaimosi Friends University Sports Portal</footer>
+<script src="js/api.js"></script>
+<script>
+document.getElementById('navToggle')?.addEventListener('click', function() {
+    document.getElementById('navLinks').classList.toggle('open');
+    this.textContent = document.getElementById('navLinks').classList.contains('open') ? '✕' : '☰';
+});
+(async () => {
+    try {
+        const players = await API.getPlayers();
+        const rows = players.map((p, i) => `
+            <tr>
+                <td style="color:#C9A227; font-weight:bold;">${i + 1}</td>
+                <td style="font-weight:600; color:#fff;">${p.name}</td>
+                <td>${p.team ? p.team.name : '—'}</td>
+                <td>${p.position || '—'}</td>
+                <td style="text-align:center; font-family:'Playfair Display',serif; font-size:20px; color:#C9A227;">${p.goals || 0}</td>
+                <td style="text-align:center; color:#4DD086;">${p.assists || 0}</td>
+            </tr>
+        `).join('');
+        document.getElementById('playersBody').innerHTML = rows || '<tr><td colspan="6" class="loading">No players yet</td></tr>';
+    } catch (err) {
+        document.getElementById('playersBody').innerHTML = `<tr><td colspan="6" class="error">${err.message}</td></tr>`;
+    }
+})();
+</script>
+</body>
+</html>

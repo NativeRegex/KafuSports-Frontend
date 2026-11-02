@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results | KAFU Sports</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav class="navbar">
+    <a class="navbar-brand" href="index.html">
+        <img src="images/kafu-logo.png" alt="KAFU"/>
+        <span class="brand-text">KAFU <span class="brand-accent">SPORTS</span></span>
+    </a>
+    <button class="nav-toggle" id="navToggle">☰</button>
+    <div class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="league.html">League</a>
+        <a href="fixtures.html">Fixtures</a>
+        <a href="results.html" class="active">Results</a>
+        <a href="teams.html">Teams</a>
+        <a href="players.html">Players</a>
+        <a href="stats.html">Stats</a>
+    </div>
+</nav>
+<main class="container">
+    <div class="card">
+        <h1>Match Results</h1>
+        <p style="color: #8b949e; margin-bottom: 24px;">Completed matches.</p>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th><th style="text-align:right;">Home</th><th style="text-align:center;">Score</th><th>Away</th><th>Venue</th>
+                    </tr>
+                </thead>
+                <tbody id="resultsBody">
+                    <tr><td colspan="5" class="loading">Loading…</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+<footer>© 2026 Kaimosi Friends University Sports Portal</footer>
+<script src="js/api.js"></script>
+<script>
+document.getElementById('navToggle')?.addEventListener('click', function() {
+    document.getElementById('navLinks').classList.toggle('open');
+    this.textContent = document.getElementById('navLinks').classList.contains('open') ? '✕' : '☰';
+});
+(async () => {
+    try {
+        const results = await API.getResults();
+        const rows = results.map(r => `
+            <tr>
+                <td>${r.matchDate ? new Date(r.matchDate).toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'numeric'}) : '—'}</td>
+                <td style="text-align:right; font-weight:600; color:#fff;">${r.homeTeam.name}</td>
+                <td style="text-align:center; font-family:'Playfair Display',serif; font-size:22px; color:#C9A227; letter-spacing:2px;">${r.homeScore} - ${r.awayScore}</td>
+                <td style="font-weight:600; color:#fff;">${r.awayTeam.name}</td>
+                <td>${r.venue || '—'}</td>
+            </tr>
+        `).join('');
+        document.getElementById('resultsBody').innerHTML = rows || '<tr><td colspan="5" class="loading">No results yet</td></tr>';
+    } catch (err) {
+        document.getElementById('resultsBody').innerHTML = `<tr><td colspan="5" class="error">${err.message}</td></tr>`;
+    }
+})();
+</script>
+</body>
+</html>

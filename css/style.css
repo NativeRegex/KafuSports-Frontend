@@ -1,0 +1,227 @@
+/* KAFU Sports — Shared Styles */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+    background: #0A0E14 url('../images/kafuu.png') no-repeat center center fixed;
+    background-size: cover;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: transparent;
+    color: #F9FAFB;
+    min-height: 100vh;
+    position: relative;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 20, 15, 0.65);
+    z-index: 0;
+    pointer-events: none;
+}
+
+nav, main, footer, .container, .card { position: relative; z-index: 1; }
+
+/* ---------- Navbar ---------- */
+.navbar {
+    background: rgba(10, 14, 20, 0.97);
+    border-bottom: 1px solid rgba(26, 92, 56, 0.4);
+    padding: 15px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+}
+
+.navbar-brand img { width: 42px; height: 42px; }
+
+.navbar-brand .brand-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: #FFFFFF;
+    letter-spacing: 3px;
+}
+.navbar-brand .brand-accent { color: #C9A227; }
+
+.nav-links { display: flex; gap: 28px; }
+.nav-links a {
+    color: #C9D1D9;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+}
+.nav-links a:hover,
+.nav-links a.active { color: #C9A227; }
+
+.nav-toggle {
+    display: none;
+    background: transparent;
+    border: 1px solid rgba(201, 162, 39, 0.5);
+    color: #C9A227;
+    font-size: 22px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+/* ---------- Container ---------- */
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* ---------- Cards ---------- */
+.card {
+    background: rgba(10, 20, 15, 0.92);
+    border: 1px solid rgba(77, 208, 134, 0.35);
+    border-radius: 14px;
+    padding: 30px;
+    box-shadow: 0 0 40px rgba(26, 92, 56, 0.15);
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+    background: #1A5C38;
+    color: #FFFFFF;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s ease;
+}
+.btn:hover { background: #C9A227; color: #0A0E14; }
+
+.btn-outline {
+    background: transparent;
+    border: 2px solid #C9A227;
+    color: #C9A227;
+}
+.btn-outline:hover { background: #C9A227; color: #0A0E14; }
+
+/* ---------- Headings ---------- */
+h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 52px;
+    letter-spacing: 3px;
+    color: #C9A227;
+    margin-bottom: 20px;
+}
+h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    letter-spacing: 2px;
+    color: #FFFFFF;
+    margin-bottom: 16px;
+}
+h3 { font-size: 20px; color: #C9A227; margin-bottom: 12px; }
+
+/* ---------- Tables ---------- */
+.table-wrap {
+    overflow-x: auto;
+    border-radius: 8px;
+    background: rgba(10, 14, 20, 0.75);
+}
+table { width: 100%; border-collapse: collapse; }
+thead { background: linear-gradient(90deg, rgba(26,92,56,0.4), rgba(201,162,39,0.2)); }
+th {
+    padding: 14px 15px;
+    text-align: left;
+    color: #C9A227;
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+tbody tr { border-top: 1px solid rgba(77, 208, 134, 0.12); }
+tbody tr:hover { background: rgba(77, 208, 134, 0.06); }
+td { padding: 14px 15px; color: #C9D1D9; }
+
+/* ---------- Forms ---------- */
+input, select, textarea {
+    width: 100%;
+    padding: 12px 14px;
+    background: #FFFFFF;
+    color: #0A0E14;
+    border: 2px solid #C9A227;
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
+    margin-bottom: 12px;
+}
+input:focus, select:focus, textarea:focus { outline: none; border-color: #1A5C38; }
+
+/* ---------- Footer ---------- */
+footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: #5a6673;
+    font-size: 13px;
+}
+
+/* ---------- Loading / Error ---------- */
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: #C9A227;
+    font-size: 16px;
+}
+.error {
+    padding: 20px;
+    background: rgba(220,53,69,0.15);
+    border: 1px solid rgba(220,53,69,0.5);
+    border-radius: 8px;
+    color: #ff7b72;
+    margin: 20px 0;
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 768px) {
+    .navbar { padding: 12px 16px; position: relative; }
+    .navbar-brand .brand-text { font-size: 20px; }
+    .navbar-brand img { width: 34px; height: 34px; }
+    .nav-toggle { display: block; }
+    .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0; right: 0;
+        display: none;
+        flex-direction: column;
+        background: rgba(10, 14, 20, 0.98);
+        border-top: 1px solid rgba(201, 162, 39, 0.4);
+        padding: 0;
+    }
+    .nav-links.open { display: flex; }
+    .nav-links a {
+        padding: 14px 20px;
+        border-bottom: 1px solid rgba(201, 162, 39, 0.15);
+    }
+    h1 { font-size: 34px; }
+    h2 { font-size: 22px; }
+    .container { padding: 0 12px; }
+    .card { padding: 20px 16px; }
+}

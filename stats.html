@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stats | KAFU Sports</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav class="navbar">
+    <a class="navbar-brand" href="index.html">
+        <img src="images/kafu-logo.png" alt="KAFU"/>
+        <span class="brand-text">KAFU <span class="brand-accent">SPORTS</span></span>
+    </a>
+    <button class="nav-toggle" id="navToggle">☰</button>
+    <div class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="league.html">League</a>
+        <a href="fixtures.html">Fixtures</a>
+        <a href="results.html">Results</a>
+        <a href="teams.html">Teams</a>
+        <a href="players.html">Players</a>
+        <a href="stats.html" class="active">Stats</a>
+    </div>
+</nav>
+<main class="container">
+    <div class="card" style="margin-bottom: 24px;">
+        <h1>League Stats</h1>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;">
+        <div class="card" style="text-align:center; padding: 24px;">
+            <div id="statTeams" style="font-family:'Playfair Display',serif; font-size:52px; color:#C9A227;">—</div>
+            <div style="color:#8b949e; font-size:12px; letter-spacing:2px; margin-top:6px;">TEAMS</div>
+        </div>
+        <div class="card" style="text-align:center; padding: 24px;">
+            <div id="statMatches" style="font-family:'Playfair Display',serif; font-size:52px; color:#4DD086;">—</div>
+            <div style="color:#8b949e; font-size:12px; letter-spacing:2px; margin-top:6px;">MATCHES</div>
+        </div>
+        <div class="card" style="text-align:center; padding: 24px;">
+            <div id="statGoals" style="font-family:'Playfair Display',serif; font-size:52px; color:#ff7b72;">—</div>
+            <div style="color:#8b949e; font-size:12px; letter-spacing:2px; margin-top:6px;">TOTAL GOALS</div>
+        </div>
+    </div>
+    <div class="card">
+        <h2 style="margin-bottom: 20px;">Top Scorers</h2>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr><th>#</th><th>Player</th><th>Team</th><th style="text-align:center;">Goals</th></tr>
+                </thead>
+                <tbody id="scorersBody">
+                    <tr><td colspan="4" class="loading">Loading…</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+<footer>© 2026 Kaimosi Friends University Sports Portal</footer>
+<script src="js/api.js"></script>
+<script>
+document.getElementById('navToggle')?.addEventListener('click', function() {
+    document.getElementById('navLinks').classList.toggle('open');
+    this.textContent = document.getElementById('navLinks').classList.contains('open') ? '✕' : '☰';
+});
+(async () => {
+    try {
+        const stats = await API.getStats();
+        document.getElementById('statTeams').textContent   = stats.totalTeams ?? '—';
+        document.getElementById('statMatches').textContent = stats.totalMatches ?? '—';
+        document.getElementById('statGoals').textContent   = stats.totalGoals ?? '—';
+        const scorers = (stats.topScorers || []).map((p, i) => `
+            <tr>
+                <td style="color:#C9A227; font-weight:bold;">${i + 1}</td>
+                <td style="font-weight:600; color:#fff;">${p.name}</td>
+                <td>${p.team ? p.team.name : '—'}</td>
+                <td style="text-align:center; font-family:'Playfair Display',serif; font-size:20px; color:#C9A227;">${p.goals || 0}</td>
+            </tr>
+        `).join('');
+        document.getElementById('scorersBody').innerHTML = scorers || '<tr><td colspan="4" class="loading">No players yet</td></tr>';
+    } catch (err) {
+        document.getElementById('scorersBody').innerHTML = `<tr><td colspan="4" class="error">${err.message}</td></tr>`;
+    }
+})();
+</script>
+</body>
+</html>

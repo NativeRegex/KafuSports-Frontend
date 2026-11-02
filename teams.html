@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teams | KAFU Sports</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav class="navbar">
+    <a class="navbar-brand" href="index.html">
+        <img src="images/kafu-logo.png" alt="KAFU"/>
+        <span class="brand-text">KAFU <span class="brand-accent">SPORTS</span></span>
+    </a>
+    <button class="nav-toggle" id="navToggle">☰</button>
+    <div class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="league.html">League</a>
+        <a href="fixtures.html">Fixtures</a>
+        <a href="results.html">Results</a>
+        <a href="teams.html" class="active">Teams</a>
+        <a href="players.html">Players</a>
+        <a href="stats.html">Stats</a>
+    </div>
+</nav>
+<main class="container">
+    <div class="card">
+        <h1>KAFU Teams</h1>
+        <p style="color: #8b949e; margin-bottom: 24px;">All clubs in the KAFU League.</p>
+        <div id="teamsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px;">
+            <div class="loading">Loading…</div>
+        </div>
+    </div>
+</main>
+<footer>© 2026 Kaimosi Friends University Sports Portal</footer>
+<script src="js/api.js"></script>
+<script>
+document.getElementById('navToggle')?.addEventListener('click', function() {
+    document.getElementById('navLinks').classList.toggle('open');
+    this.textContent = document.getElementById('navLinks').classList.contains('open') ? '✕' : '☰';
+});
+(async () => {
+    try {
+        const teams = await API.getTeams();
+        const cards = teams.map(t => `
+            <div style="background: rgba(10,20,15,0.9); border: 1px solid rgba(201,162,39,0.35); border-radius: 12px; padding: 24px; text-align: center;">
+                <div style="font-size: 40px; margin-bottom: 12px;">⚽</div>
+                <h3 style="color: #C9A227; margin-bottom: 8px; font-size: 20px;">${t.name}</h3>
+                <p style="color: #8b949e; font-size: 13px; margin-bottom: 16px;">${t.sport || "Men's Football"}</p>
+                <div style="display: flex; justify-content: space-around; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <div><div style="color:#C9A227; font-weight:700; font-size:18px;">${t.points}</div><div style="color:#8b949e; font-size:11px;">PTS</div></div>
+                    <div><div style="color:#4DD086; font-weight:700; font-size:18px;">${t.wins}</div><div style="color:#8b949e; font-size:11px;">W</div></div>
+                    <div><div style="color:#C9D1D9; font-weight:700; font-size:18px;">${t.draws}</div><div style="color:#8b949e; font-size:11px;">D</div></div>
+                    <div><div style="color:#ff7b72; font-weight:700; font-size:18px;">${t.losses}</div><div style="color:#8b949e; font-size:11px;">L</div></div>
+                </div>
+            </div>
+        `).join('');
+        document.getElementById('teamsGrid').innerHTML = cards || '<div class="loading">No teams yet</div>';
+    } catch (err) {
+        document.getElementById('teamsGrid').innerHTML = `<div class="error">${err.message}</div>`;
+    }
+})();
+</script>
+</body>
+</html>
